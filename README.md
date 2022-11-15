@@ -1,4 +1,4 @@
-Antes de tudo, abre as pastas do repositório, sem os quais o aplicativo não conseguirá funcionar.
+Antes de tudo, abra as pastas do repositório e instale as dependências sem os quais o aplicativo não conseguirá funcionar.
 
 Depois, no arquivo BACKEND, inicie o server no terminal, com um "nodemon index". No front end, faça "npm start", e tudo estará pronto.
 
