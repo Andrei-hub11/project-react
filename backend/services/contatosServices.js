@@ -8,6 +8,41 @@ const listadeContatos = [
     email: "and@gmail.com",
     number: "43657123",
   },
+  {
+    id: uuid.v4(),
+    name: "Deise",
+    secondaryName: "dfdbdb",
+    email: "deise@gmail.com",
+    number: "536753",
+  },
+  {
+    id: uuid.v4(),
+    name: "José",
+    secondaryName: "rodri",
+    email: "and@gmail.com",
+    number: "43657234",
+  },
+  {
+    id: uuid.v4(),
+    name: "Bruno",
+    secondaryName: "aaadaf",
+    email: "bruno2018@gmail.com",
+    number: "38576396",
+  },
+  {
+    id: uuid.v4(),
+    name: "Z",
+    secondaryName: "mãe",
+    email: "zhatake22@gmail.com",
+    number: "4658786",
+  },
+  {
+    id: uuid.v4(),
+    name: "gandalf",
+    secondaryName: "aaadaf",
+    email: "gandalf@gmail.com",
+    number: "3435534",
+  },
 ];
 
 const getAllContacts = () => {
@@ -46,8 +81,6 @@ const addNewContact = (body) => {
     } else {
       listadeContatos.push(newContact);
 
-      /*  organizar em ordem alfabética */
-      listadeContatos.sort((a, b) => a.name.localeCompare(b.name));
       resolve(newContact);
     }
   });
@@ -80,8 +113,6 @@ const modifyContactById = (contactId, body) => {
           ? emailUpdate
           : listadeContatos[i].email;
 
-        /*  organizar em ordem alfabética */
-        listadeContatos.sort((a, b) => a.name.localeCompare(b.name));
         resolve(listadeContatos[index]);
       } else if (i === listadeContatos.length - 1) {
         reject({ msg: `Contato com id ${contactId} não foi encontrado` });

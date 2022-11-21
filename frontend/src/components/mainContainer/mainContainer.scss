@@ -34,6 +34,10 @@
       border: none;
       outline: none;
     }
+
+    &-input::placeholder {
+      color: #ffff;
+    }
   }
 
   &__button-add {

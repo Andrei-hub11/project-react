@@ -3,7 +3,7 @@ import ContactInformations from "../contactInformations/ContactInformations";
 import ContactList from "../contactList/ContactList";
 import { UserContext } from "../contexts/context";
 import { useSelector, useDispatch } from "react-redux";
-import { filterContact, deleteContactAsync } from "../redux/contactsSlice.js";
+import { deleteContactAsync } from "../redux/contactsSlice.js";
 import BoxAddContact from "../formContact/BoxAddContact";
 import "../mainContainer/mainContainer.scss";
 
@@ -15,6 +15,7 @@ function MainContainer() {
     revealSecondaryMenu,
     getElementMenuSecondary,
     changeInformationsElements,
+    filterContacts,
   } = React.useContext(UserContext);
 
   const contacts = useSelector((state) => state.contacts);
@@ -25,6 +26,9 @@ function MainContainer() {
   const [menuSecondary, setMenuSecondary] = revealSecondaryMenu;
   const [elementMenuSecondary, setElementMenuSecondary] =
     getElementMenuSecondary;
+  const [getContactstoFilter, setContactstoFilter] = filterContacts;
+
+  const [searchInput, SetSearchInput] = React.useState("");
 
   const { id } = contactsInfo;
 
@@ -41,7 +45,6 @@ function MainContainer() {
     setMenuInformations(!menuInformations);
     setContactsInfo("");
   };
-  console.log(contacts);
 
   document.addEventListener("click", (e) => {
     console.log(elementMenuSecondary);
@@ -55,6 +58,27 @@ function MainContainer() {
     }
   });
 
+  const handleSearchContact = (e) => {
+    const search = e.target.value;
+    if (search !== "") {
+      const filteredContacts = contacts.filter((contact) => {
+        return contact.name
+          .toLowerCase()
+          .includes(search.toString().toLocaleLowerCase());
+      });
+      setContactstoFilter([...filteredContacts]);
+    } else {
+      setContactstoFilter("");
+    }
+  };
+
+  React.useEffect(() => {
+    if (navbarOpen || menuInformations) {
+      SetSearchInput("");
+      setContactstoFilter("");
+    }
+  }, [navbarOpen, menuInformations]);
+
   return (
     <>
       <section className={"mainBox"}>
@@ -64,7 +88,18 @@ function MainContainer() {
           }`}
         >
           <div className="box-app__modal">
-            <input className="box-app__modal-input" type="text" />
+            <input
+              className={`box-app__modal-input ${
+                navbarOpen || menuInformations ? "" : ""
+              }`}
+              type="text"
+              placeholder="Pesquise um contato"
+              value={searchInput}
+              onChange={(e) => {
+                handleSearchContact(e);
+                SetSearchInput(e.currentTarget.value);
+              }}
+            />
           </div>
           <BoxAddContact />
           <ContactList />

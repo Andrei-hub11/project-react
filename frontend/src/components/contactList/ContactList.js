@@ -6,17 +6,25 @@ import "../contactList/ContactList.scss";
 
 function ContactList() {
   const dispatch = useDispatch();
-  const contacts = useSelector((state) => state.contacts);
+  const getContactsState = useSelector((state) => state.contacts);
 
-  console.log(contacts);
+  /* Organizando em ordem alfabética pra exibição */
+  const contacts = [...getContactsState].sort((contactA, contactB) =>
+    contactA.name.localeCompare(contactB.name)
+  );
 
-  const { revealInformations, changeInformationsElements } =
-    React.useContext(UserContext);
+  const {
+    addContact,
+    revealInformations,
+    changeInformationsElements,
+    filterContacts,
+  } = React.useContext(UserContext);
 
+  const [navbarOpen, setNavBarOpen] = addContact;
   const [menuInformations, setMenuInformations] = revealInformations;
   const [contactsInfo, setContactsInfo] = changeInformationsElements;
+  const [getContactstoFilter, setContactstoFilter] = filterContacts;
 
-  /* problema a resolver!! contatos não re-renderizam após patch req */
   React.useEffect(() => {
     dispatch(getContactsAsync());
   }, [dispatch]);
@@ -25,8 +33,6 @@ function ContactList() {
     setMenuInformations(!menuInformations);
 
     const idContact = e.currentTarget.id;
-    console.log(idContact);
-    console.log(menuInformations);
 
     for (let i = 0; i < contacts.length; i++) {
       if (contacts[i].id === idContact) {
@@ -43,23 +49,42 @@ function ContactList() {
   };
 
   return (
-    <div className="box-app__contacts">
-      {contacts.map((contact) => {
-        console.log(contact);
-        return (
-          <div
-            key={contact.id}
-            className="box-app__contacts__list"
-            id={contact.id}
-            onClick={handleMenuInformations}
-          >
-            <div className="box-app__contacts__initialname">
-              {contact.name[0].toUpperCase()}
-            </div>
-            <div className="box-app__contacts__name">{contact.name}</div>
-          </div>
-        );
-      })}
+    <div
+      className={`box-app__contacts ${
+        navbarOpen || menuInformations ? "contacts--overflow-remove" : ""
+      }`}
+    >
+      {getContactstoFilter.length > 0
+        ? getContactstoFilter.map((contact) => {
+            return (
+              <div
+                key={contact.id}
+                className="box-app__contacts__list"
+                id={contact.id}
+                onClick={handleMenuInformations}
+              >
+                <div className="box-app__contacts__initialname">
+                  {contact.name[0].toUpperCase()}
+                </div>
+                <div className="box-app__contacts__name">{contact.name}</div>
+              </div>
+            );
+          })
+        : contacts.map((contact) => {
+            return (
+              <div
+                key={contact.id}
+                className="box-app__contacts__list"
+                id={contact.id}
+                onClick={handleMenuInformations}
+              >
+                <div className="box-app__contacts__initialname">
+                  {contact.name[0].toUpperCase()}
+                </div>
+                <div className="box-app__contacts__name">{contact.name}</div>
+              </div>
+            );
+          })}
     </div>
   );
 }

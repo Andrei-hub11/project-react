@@ -14,6 +14,7 @@ export const UserProvider = ({ children }) => {
     numberContact: "",
     emailContact: "",
   });
+  const [filter, setFilter] = React.useState([]);
 
   return (
     <UserContext.Provider
@@ -23,6 +24,7 @@ export const UserProvider = ({ children }) => {
         revealSecondaryMenu: [secondary, setSecondary],
         getElementMenuSecondary: [element, setElement],
         changeInformationsElements: [contactData, setContactData],
+        filterContacts: [filter, setFilter],
       }}
     >
       {children}

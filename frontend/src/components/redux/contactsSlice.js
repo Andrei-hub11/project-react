@@ -55,6 +55,7 @@ export const updateContactAsync = createAsyncThunk(
 
     if (resp.ok) {
       const contact = await resp.json();
+      console.log(contact);
       return { contact };
     }
   }
@@ -81,25 +82,31 @@ export const contactSlice = createSlice({
   initialState: [],
   reducers: {
     addContact: (state, action) => {
-      const contact = {
+      /* const contact = {
         firstName: action.payload.firstName,
         secondaryName: action.payload.secondaryName,
         numberContact: action.payload.numberContact,
         emailContact: action.payload.emailContact,
       };
-      state.push(contact);
+      state.push(contact); */
+
+      return [...state, action.payload];
     },
     updateContact: (state, action) => {
+      const { id, name, secondaryName, email, number } = action.payload.contact;
+
       const index = state.findIndex(
         (contacts) => contacts.id === action.payload.id
       );
-      state[index].firstName = action.payload.firstName;
-      state[index].secondaryName = action.payload.secondaryName;
-      state[index].numberContact = action.payload.numberContact;
-      state[index].emailContact = action.payload.emailContact;
+
+      state[index].name = name;
+      state[index].secondaryName = secondaryName;
+      state[index].number = number;
+      state[index].email = email;
     },
     deleteContact: (state, action) => {
-      return state.filter((contact) => contact.id !== action.payload.id);
+      console.log(action.payload);
+      return state.filter((contact) => contact.id !== action.payload);
     },
   },
   extraReducers: {
@@ -110,13 +117,14 @@ export const contactSlice = createSlice({
       state.push(action.payload.contact);
     },
     [updateContactAsync.fulfilled]: (state, action) => {
+      const { id, name, secondaryName, email, number } = action.payload.contact;
       const index = state.findIndex(
         (contact) => contact.id === action.payload.contact.id
       );
-      state[index].firstName = action.payload.contact.firstName;
-      state[index].secondaryName = action.payload.contact.secondaryName;
-      state[index].numberContact = action.payload.contact.numberContact;
-      state[index].emailContact = action.payload.contact.emailContact;
+      state[index].name = name;
+      state[index].secondaryName = secondaryName;
+      state[index].number = number;
+      state[index].email = email;
     },
     [deleteContactAsync.fulfilled]: (state, action) => {
       return state.filter((contact) => contact.id !== action.payload.id);

@@ -14,9 +14,10 @@
     height: 3.4rem;
     border-radius: 2rem;
     margin-top: 2rem;
-    margin-left: 4rem;
+    margin-left: 3rem;
     cursor: pointer;
     overflow: hidden;
+    border: solid 0.1rem #1939b7;
   }
 
   &__list:hover {
@@ -38,4 +39,8 @@
     font-size: 1.7rem;
     padding: 0.9rem 2rem 1rem;
   }
+}
+
+.contacts--overflow-remove {
+  display: none;
 }

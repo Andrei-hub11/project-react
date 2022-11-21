@@ -1,7 +1,6 @@
 import React from "react";
 import { UserContext } from "../contexts/context";
-import { useSelector, useDispatch } from "react-redux";
-import { updateContactAsync } from "../redux/contactsSlice.js";
+
 import { Link } from "react-router-dom";
 import IconArrow from "../images/bx-left-arrow-alt.svg";
 import IconPencil from "../images/bxs-pencil.svg";
@@ -19,7 +18,6 @@ function ContactInformations() {
     revealSecondaryMenu,
     getElementMenuSecondary,
   } = React.useContext(UserContext);
-  const dispatch = useDispatch();
 
   const [navbarOpen, setNavBarOpen] = addContact;
   const [menuInformations, setMenuInformations] = revealInformations;
@@ -42,7 +40,6 @@ function ContactInformations() {
     setMenuSecondary(!menuSecondary);
     const IconDots = e.target;
     setElementMenuSecondary(IconDots);
-    console.log(menuSecondary);
   };
 
   const handleEditContact = () => {

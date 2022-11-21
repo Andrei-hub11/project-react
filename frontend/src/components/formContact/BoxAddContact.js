@@ -3,14 +3,13 @@ import { UserContext } from "../contexts/context";
 import { useFormik } from "formik";
 import { basicSchema } from "../../schemas/schemas";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+
 import { addContactAsync, updateContactAsync } from "../redux/contactsSlice.js";
 import "../formContact/BoxAddContact.scss";
 
 function BoxAddContact() {
   const { addContact, changeInformationsElements } =
     React.useContext(UserContext);
-  const navigate = useNavigate();
 
   const [navbarOpen, setNavBarOpen] = addContact;
   const [contactsInfo, setContactsInfo] = changeInformationsElements;
@@ -79,7 +78,11 @@ function BoxAddContact() {
     onSubmit,
   });
 
-  console.log(errors.phonenumber);
+  const handleChangeInputs = (e) => {
+    handleChange(e);
+  };
+
+  /* setContactsInfo, no onchange, é usado pra garantir que o valor seja atualizado corretamente e validado*/
 
   return (
     <>
@@ -117,17 +120,16 @@ function BoxAddContact() {
               id="name"
               placeholder="Nome"
               value={firstName ? (values.name = firstName) : (values.name = "")}
-              onChange={
-                (handleChange,
-                (e) =>
-                  setContactsInfo({
-                    id: id,
-                    firstName: e.currentTarget.value,
-                    secondaryName: secondaryName,
-                    numberContact: numberContact,
-                    emailContact: emailContact,
-                  }))
-              }
+              onChange={(e) => {
+                handleChangeInputs(e);
+                setContactsInfo({
+                  id: id,
+                  firstName: e.currentTarget.value,
+                  secondaryName: secondaryName,
+                  numberContact: numberContact,
+                  emailContact: emailContact,
+                });
+              }}
               onBlur={handleBlur}
             />
             <label>Nome</label>
@@ -150,17 +152,16 @@ function BoxAddContact() {
                   ? (values.secondaryname = secondaryName)
                   : (values.secondaryname = "")
               }`}
-              onChange={
-                (handleChange,
-                (e) =>
-                  setContactsInfo({
-                    id: id,
-                    firstName: firstName,
-                    secondaryName: e.currentTarget.value,
-                    numberContact: numberContact,
-                    emailContact: emailContact,
-                  }))
-              }
+              onChange={(e) => {
+                handleChangeInputs(e);
+                setContactsInfo({
+                  id: id,
+                  firstName: firstName,
+                  secondaryName: e.currentTarget.value,
+                  numberContact: numberContact,
+                  emailContact: emailContact,
+                });
+              }}
               onBlur={handleBlur}
             />
             <label>Segundo nome</label>
@@ -176,8 +177,11 @@ function BoxAddContact() {
           </div>
           <div className="two box-app__form__control">
             <input
-              type="number"
+              type="text"
               className="number input-contact"
+              onKeyPress={(e) => {
+                if (!/[0-9]/.test(e.key)) e.preventDefault();
+              }}
               id="phonenumber"
               placeholder="Número"
               value={`${
@@ -185,17 +189,16 @@ function BoxAddContact() {
                   ? (values.phonenumber = numberContact)
                   : (values.phonenumber = "")
               }`}
-              onChange={
-                (handleChange,
-                (e) =>
-                  setContactsInfo({
-                    id: id,
-                    firstName: firstName,
-                    secondaryName: secondaryName,
-                    numberContact: e.currentTarget.value,
-                    emailContact: emailContact,
-                  }))
-              }
+              onChange={(e) => {
+                handleChangeInputs(e);
+                setContactsInfo({
+                  id: id,
+                  firstName: firstName,
+                  secondaryName: secondaryName,
+                  numberContact: e.currentTarget.value,
+                  emailContact: emailContact,
+                });
+              }}
               onBlur={handleBlur}
             />
             <label>Número</label>
@@ -218,16 +221,15 @@ function BoxAddContact() {
                   ? (values.email = emailContact)
                   : (values.email = "")
               }`}
-              onChange={
-                (handleChange,
-                (e) =>
-                  setContactsInfo({
-                    firstName: firstName,
-                    secondaryName: secondaryName,
-                    numberContact: numberContact,
-                    emailContact: e.currentTarget.value,
-                  }))
-              }
+              onChange={(e) => {
+                handleChangeInputs(e);
+                setContactsInfo({
+                  firstName: firstName,
+                  secondaryName: secondaryName,
+                  numberContact: numberContact,
+                  emailContact: e.currentTarget.value,
+                });
+              }}
               onBlur={handleBlur}
             />
             <label>E-mail</label>
